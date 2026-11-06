@@ -91,11 +91,11 @@ mod tests {
                     let first = mascot_frame(mascot, mode, style);
                     let second = mascot_frame(mascot, mode, style);
                     assert_eq!(first, second);
-                    assert!(!first.alt_text.is_empty());
+                    assert_ne!(first.alt_text, "");
                     if style == RenderStyle::Plain {
-                        assert!(first.art.is_empty());
+                        assert_eq!(first.art, "");
                     } else {
-                        assert!(!first.art.is_empty());
+                        assert_ne!(first.art, "");
                     }
                 }
             }
