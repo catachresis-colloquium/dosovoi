@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: MPL-2.0
+name: Rust
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: rust-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  check:
+    name: Rust tests and Clippy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install the declared stable toolchain
+        run: rustup toolchain install stable --profile minimal --component clippy --component rustfmt
+      - name: Check formatting
+        run: cargo +stable fmt --all --check
+      - name: Check every Clippy target
+        run: cargo +stable clippy --workspace --all-targets --locked -- -D warnings
+      - name: Test the workspace
+        run: cargo +stable test --workspace --locked
