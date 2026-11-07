@@ -6,12 +6,14 @@ Open an issue describing the problem or send a focused pull request against
 `main`. Include the behavior before and after the change and the checks you ran.
 Do not include personal terminal contents, credentials, or private configuration.
 
-Use stable Rust 1.80 or newer. From the repository root, run:
+Rust 1.80 is the minimum supported version. To match CI, install the current
+stable toolchain and run these checks from the repository root:
 
 ```sh
-cargo fmt --all --check
-cargo clippy --workspace --all-targets --locked -- -D warnings
-cargo test --workspace --locked
+rustup toolchain install stable --profile minimal --component clippy --component rustfmt
+cargo +stable fmt --all --check
+cargo +stable clippy --workspace --all-targets --locked -- -D warnings
+cargo +stable test --workspace --locked
 ```
 
 Keep the core library deterministic and preserve the command-line contract:
